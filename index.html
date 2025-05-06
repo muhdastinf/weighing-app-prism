@@ -2,7 +2,10 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Prisma Timbangan Digital</title>
     <style>
       * {
@@ -12,53 +15,58 @@
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
-     /* Fix for body */
-body {
-    background-color: #f5f5f5;
-    color: #333;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
-    min-height: 100vh; /* Change height to min-height */
-    display: flex; /* Add this */
-    flex-direction: column; /* Add this */
-    overflow-x: hidden; /* Only hide horizontal overflow */
-}
+      /* Fix for body */
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 0;
+        position: relative;
+        min-height: 100vh; /* Change height to min-height */
+        display: flex; /* Add this */
+        flex-direction: column; /* Add this */
+        overflow-x: hidden; /* Only hide horizontal overflow */
+      }
 
-/* Fix for container */
-.container {
-    display: flex;
-    flex-direction: column;
-    flex: 1; /* Change height to flex: 1 */
-    background: linear-gradient(180deg, #054a91 0%, #3e7cb1 100%);
-    overflow-x: hidden; /* Only hide horizontal overflow */
-}
+      /* Fix for container */
+      .container {
+        display: flex;
+        flex-direction: column;
+        flex: 1; /* Change height to flex: 1 */
+        background: linear-gradient(180deg, #054a91 0%, #3e7cb1 100%);
+        overflow-x: hidden; /* Only hide horizontal overflow */
+      }
 
-/* Fix for footer */
-.footer {
-    display: flex;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
-    position: sticky; /* Add this */
-    bottom: 0; /* Add this */
-    width: 100%; /* Add this */
-    z-index: 10; /* Add this to ensure it appears above other content */
-}
+      /* Fix for footer - this is the main issue */
+      .footer {
+        display: flex;
+        background-color: #f5f5f5;
+        border-top: 1px solid #ddd;
+        position: fixed; /* Change from sticky to fixed */
+        bottom: 0;
+        width: 100%;
+        z-index: 10;
+        left: 0; /* Add this to ensure proper alignment */
+        right: 0; /* Add this to ensure proper alignment */
+        max-width: 500px; /* Match the body's max-width */
+        margin: 0 auto; /* Center it like the body */
+      }
 
-/* Fix for content */
-.content {
-    flex: 1;
-    padding: 15px;
-    background-color: #fff;
-    margin: 10px;
-    border-radius: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 60px; /* Add space for the footer */
-}
-      
+      /* Fix for content - remove the bottom margin */
+      .content {
+        flex: 1;
+        padding: 15px;
+        background-color: #fff;
+        margin: 10px;
+        border-radius: 10px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 70px; /* Add padding instead of margin to create space for fixed footer */
+        margin-bottom: 0; /* Remove the margin-bottom that was pushing the footer down */
+      }
+
       .login-container {
         display: flex;
         flex-direction: column;
