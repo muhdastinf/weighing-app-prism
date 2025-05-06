@@ -1,632 +1,682 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prisma Timbangan Digital</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 0;
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background: linear-gradient(180deg, #054a91 0%, #3e7cb1 100%);
-            overflow: hidden;
-        }
-        
-        .login-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(180deg, #054a91 0%, #3e7cb1 100%);
-            padding: 20px;
-        }
-        
-        .login-logo {
-            width: 150px;
-            margin-bottom: 30px;
-        }
-        
-        .login-form {
-            background-color: #fff;
-            width: 100%;
-            max-width: 350px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
-        .form-control-container {
-            position: relative;
-            flex: 1;
-        }
-        
-        .input-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-        }
-        
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background-color: #054a91;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-        
-        .header {
-            padding: 10px 15px;
-            background-color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .logo {
-            height: 30px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: #666;
-        }
-        
-        .user-icon {
-            font-size: 18px;
-        }
-        
-        .content {
-            flex: 1;
-            padding: 15px;
-            background-color: #fff;
-            margin: 10px;
-            border-radius: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .weight-display {
-            background-color: #054a91;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: right;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .weight-value {
-            font-size: 32px;
-            font-weight: bold;
-        }
-        
-        .weight-label {
-            font-size: 14px;
-            color: #ccc;
-        }
-        
-        .parameter-section {
-            margin-bottom: 15px;
-        }
-        
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #054a91;
-        }
-        
-        .form-row {
-            display: flex;
-            margin-bottom: 10px;
-        }
-        
-        .form-row label {
-            width: 120px;
-            font-size: 14px;
-            color: #666;
-            padding-top: 8px;
-        }
-        
-        .form-row .form-control {
-            flex: 1;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: auto;
-        }
-        
-        .action-btn {
-            flex: 1;
-            padding: 12px;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            text-align: center;
-            text-transform: uppercase;
-        }
-        
-        .btn-tare {
-            background-color: #054a91;
-        }
-        
-        .btn-zero {
-            background-color: #054a91;
-        }
-        
-        .btn-submit {
-            background-color: #054a91;
-        }
-        
-        .footer {
-            display: flex;
-            background-color: #f5f5f5;
-            border-top: 1px solid #ddd;
-        }
-        
-        .nav-item {
-            flex: 1;
-            padding: 12px 5px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-        
-        .nav-item.active {
-            background-color: #ffd900;
-            color: #333;
-        }
-        
-        .nav-icon {
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-        
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 15px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        
-        th, td {
-            padding: 8px 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        
-        .master-menu {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .master-item {
-            background-color: #f2f2f2;
-            padding: 15px;
-            border-radius: 8px;
-            width: calc(50% - 5px);
-            text-align: center;
-            cursor: pointer;
-        }
-        
-        .master-icon {
-            font-size: 24px;
-            color: #054a91;
-            margin-bottom: 5px;
-        }
-        
-        .settings-item {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: #054a91;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        .btn-save {
-            background-color: #054a91;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            cursor: pointer;
-            float: right;
-        }
-        
-        .add-form {
-            padding: 15px;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .close {
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .modal-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .btn-cancel {
-            background-color: #f2f2f2;
-        }
-        
-        .btn-confirm {
-            background-color: #054a91;
-            color: white;
-        }
-        
-        .search-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .search-content {
-            background-color: white;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 10px;
-            overflow: hidden;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .search-header {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        
-        .search-results {
-            flex: 1;
-            overflow-y: auto;
-            max-height: 50vh;
-        }
-        
-        .search-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-        }
-        
-        .search-checkbox {
-            margin-right: 10px;
-            width: 20px;
-            height: 20px;
-        }
-        
-        .search-details {
-            flex: 1;
-        }
-        
-        .search-id {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .search-name {
-            font-weight: bold;
-        }
-        
-        .search-pagination {
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f5f5f5;
-            border-top: 1px solid #ddd;
-        }
-        
-        .pagination-info {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .pagination-controls {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .pagination-button {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .pagination-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .search-footer {
-            padding: 10px 15px;
-            border-top: 1px solid #ddd;
-            text-align: right;
-        }
-        
-        .search-submit {
-            padding: 8px 15px;
-            background-color: #054a91;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Fix for body */
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 0;
+        position: relative;
+        min-height: 100vh; /* Change height to min-height */
+        display: flex; /* Add this */
+        flex-direction: column; /* Add this */
+        overflow-x: hidden; /* Only hide horizontal overflow */
+      }
+
+      /* Fix for container */
+      .container {
+        display: flex;
+        flex-direction: column;
+        flex: 1; /* Change height to flex: 1 */
+        background: linear-gradient(180deg, #054a91 0%, #3e7cb1 100%);
+        overflow-x: hidden; /* Only hide horizontal overflow */
+      }
+
+      /* Fix for footer */
+      .footer {
+        display: flex;
+        background-color: #f5f5f5;
+        border-top: 1px solid #ddd;
+        position: sticky; /* Add this */
+        bottom: 0; /* Add this */
+        width: 100%; /* Add this */
+        z-index: 10; /* Add this to ensure it appears above other content */
+      }
+
+      /* Fix for content */
+      .content {
+        flex: 1;
+        padding: 15px;
+        background-color: #fff;
+        margin: 10px;
+        border-radius: 10px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 60px; /* Add space for the footer */
+      }
+
+      .login-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(180deg, #054a91 0%, #3e7cb1 100%);
+        padding: 20px;
+      }
+
+      .login-logo {
+        width: 150px;
+        margin-bottom: 30px;
+      }
+
+      .login-form {
+        background-color: #fff;
+        width: 100%;
+        max-width: 350px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form-control-container {
+        position: relative;
+        flex: 1;
+      }
+
+      .input-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 12px;
+        background-color: #054a91;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+        text-transform: uppercase;
+      }
+
+      .header {
+        padding: 10px 15px;
+        background-color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        height: 30px;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .user-icon {
+        font-size: 18px;
+      }
+
+      .weight-display {
+        background-color: #054a91;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: right;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .weight-value {
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      .weight-label {
+        font-size: 14px;
+        color: #ccc;
+      }
+
+      .parameter-section {
+        margin-bottom: 15px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #054a91;
+      }
+
+      .form-row {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      .form-row label {
+        width: 120px;
+        font-size: 14px;
+        color: #666;
+        padding-top: 8px;
+      }
+
+      .form-row .form-control {
+        flex: 1;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+      }
+
+      .action-btn {
+        flex: 1;
+        padding: 12px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .btn-tare {
+        background-color: #054a91;
+      }
+
+      .btn-zero {
+        background-color: #054a91;
+      }
+
+      .btn-submit {
+        background-color: #054a91;
+      }
+
+      .nav-item {
+        flex: 1;
+        padding: 12px 5px;
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: background-color 0.3s;
+      }
+
+      .nav-item.active {
+        background-color: #ffd900;
+        color: #333;
+      }
+
+      .nav-icon {
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 15px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      .master-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .master-item {
+        background-color: #f2f2f2;
+        padding: 15px;
+        border-radius: 8px;
+        width: calc(50% - 5px);
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .master-icon {
+        font-size: 24px;
+        color: #054a91;
+        margin-bottom: 5px;
+      }
+
+      .settings-item {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #054a91;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .btn-save {
+        background-color: #054a91;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        cursor: pointer;
+        float: right;
+      }
+
+      .add-form {
+        padding: 15px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .close {
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .modal-btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .btn-cancel {
+        background-color: #f2f2f2;
+      }
+
+      .btn-confirm {
+        background-color: #054a91;
+        color: white;
+      }
+
+      .search-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .search-content {
+        background-color: white;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 10px;
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .search-header {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .search-results {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 50vh;
+      }
+
+      .search-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+      }
+
+      .search-checkbox {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .search-details {
+        flex: 1;
+      }
+
+      .search-id {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      .search-name {
+        font-weight: bold;
+      }
+
+      .search-pagination {
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f5f5f5;
+        border-top: 1px solid #ddd;
+      }
+
+      .pagination-info {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .pagination-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .pagination-button {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .pagination-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .search-footer {
+        padding: 10px 15px;
+        border-top: 1px solid #ddd;
+        text-align: right;
+      }
+
+      .search-submit {
+        padding: 8px 15px;
+        background-color: #054a91;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app"></div>
-    
+
     <script>
-        // Initialize database
-        let database = {
-            users: [
-                { username: 'admin', password: 'admin', role: 'admin' },
-                { username: 'operator', password: 'operator', role: 'operator' }
-            ],
-            lines: [
-                { id: 1, name: 'Line 1' },
-                { id: 2, name: 'Line 2' }
-            ],
-            items: [
-                { id: 1, name: 'Item 1' },
-                { id: 2, name: 'Item 2', code: 'test' }
-            ],
-            products: [
-                { id: 1, name: 'Product 1', weight: '80', minTolerance: 80, maxTolerance: 85 },
-                { id: 2, name: 'Product 2', weight: '70', minTolerance: 70, maxTolerance: 75 }
-            ],
-            weighings: [
-                { id: 1, line: 'Line 1', item: 'Item 1', product: 'Product 1', weight: 81.35, status: 'OK', date: '2025-05-06' },
-                { id: 2, line: 'Line 1', item: 'Item 2', product: 'Product 2', weight: 72.41, status: 'OK', date: '2025-05-06' }
-            ]
-        };
-        
-        // Load database from localStorage
-        function loadDatabase() {
-            if(localStorage.getItem('timbangan_users')) {
-                database.users = JSON.parse(localStorage.getItem('timbangan_users'));
-            }
-            if(localStorage.getItem('timbangan_lines')) {
-                database.lines = JSON.parse(localStorage.getItem('timbangan_lines'));
-            }
-            if(localStorage.getItem('timbangan_items')) {
-                database.items = JSON.parse(localStorage.getItem('timbangan_items'));
-            }
-            if(localStorage.getItem('timbangan_products')) {
-                database.products = JSON.parse(localStorage.getItem('timbangan_products'));
-            }
-            if(localStorage.getItem('timbangan_weighings')) {
-                database.weighings = JSON.parse(localStorage.getItem('timbangan_weighings'));
-            }
+      // Initialize database
+      let database = {
+        users: [
+          { username: "admin", password: "admin", role: "admin" },
+          { username: "operator", password: "operator", role: "operator" },
+        ],
+        lines: [
+          { id: 1, name: "Line 1" },
+          { id: 2, name: "Line 2" },
+        ],
+        items: [
+          { id: 1, name: "Item 1" },
+          { id: 2, name: "Item 2", code: "test" },
+        ],
+        products: [
+          {
+            id: 1,
+            name: "Product 1",
+            weight: "80",
+            minTolerance: 80,
+            maxTolerance: 85,
+          },
+          {
+            id: 2,
+            name: "Product 2",
+            weight: "70",
+            minTolerance: 70,
+            maxTolerance: 75,
+          },
+        ],
+        weighings: [
+          {
+            id: 1,
+            line: "Line 1",
+            item: "Item 1",
+            product: "Product 1",
+            weight: 81.35,
+            status: "OK",
+            date: "2025-05-06",
+          },
+          {
+            id: 2,
+            line: "Line 1",
+            item: "Item 2",
+            product: "Product 2",
+            weight: 72.41,
+            status: "OK",
+            date: "2025-05-06",
+          },
+        ],
+      };
+
+      // Load database from localStorage
+      function loadDatabase() {
+        if (localStorage.getItem("timbangan_users")) {
+          database.users = JSON.parse(localStorage.getItem("timbangan_users"));
         }
-        
-        // Save database to localStorage
-        function saveDatabase() {
-            localStorage.setItem('timbangan_users', JSON.stringify(database.users));
-            localStorage.setItem('timbangan_lines', JSON.stringify(database.lines));
-            localStorage.setItem('timbangan_items', JSON.stringify(database.items));
-            localStorage.setItem('timbangan_products', JSON.stringify(database.products));
-            localStorage.setItem('timbangan_weighings', JSON.stringify(database.weighings));
+        if (localStorage.getItem("timbangan_lines")) {
+          database.lines = JSON.parse(localStorage.getItem("timbangan_lines"));
         }
-        
-        // Current logged in user
-        let currentUser = null;
-        
-        // Application state
-        let state = {
-            currentScreen: 'login',
-            currentMenu: 'home',
-            currentWeight: 0.000,
-            tareWeight: 0.000,
-            grossWeight: 0.000,
-            selectedLine: null,
-            selectedItem: null,
-            selectedProduct: null,
-            searchPage: 1,
-            searchResults: [],
-            searchType: null
-        };
-        
-        // Render functions
-        function renderApp() {
-            const app = document.getElementById('app');
-            
-            if (state.currentScreen === 'login') {
-                renderLogin(app);
-            } else if (state.currentScreen === 'main') {
-                renderMain(app);
-            }
+        if (localStorage.getItem("timbangan_items")) {
+          database.items = JSON.parse(localStorage.getItem("timbangan_items"));
         }
-        
-        function renderLogin(container) {
-            container.innerHTML = `
+        if (localStorage.getItem("timbangan_products")) {
+          database.products = JSON.parse(
+            localStorage.getItem("timbangan_products")
+          );
+        }
+        if (localStorage.getItem("timbangan_weighings")) {
+          database.weighings = JSON.parse(
+            localStorage.getItem("timbangan_weighings")
+          );
+        }
+      }
+
+      // Save database to localStorage
+      function saveDatabase() {
+        localStorage.setItem("timbangan_users", JSON.stringify(database.users));
+        localStorage.setItem("timbangan_lines", JSON.stringify(database.lines));
+        localStorage.setItem("timbangan_items", JSON.stringify(database.items));
+        localStorage.setItem(
+          "timbangan_products",
+          JSON.stringify(database.products)
+        );
+        localStorage.setItem(
+          "timbangan_weighings",
+          JSON.stringify(database.weighings)
+        );
+      }
+
+      // Current logged in user
+      let currentUser = null;
+
+      // Application state
+      let state = {
+        currentScreen: "login",
+        currentMenu: "home",
+        currentWeight: 0.0,
+        tareWeight: 0.0,
+        grossWeight: 0.0,
+        selectedLine: null,
+        selectedItem: null,
+        selectedProduct: null,
+        searchPage: 1,
+        searchResults: [],
+        searchType: null,
+      };
+
+      // Render functions
+      function renderApp() {
+        const app = document.getElementById("app");
+
+        if (state.currentScreen === "login") {
+          renderLogin(app);
+        } else if (state.currentScreen === "main") {
+          renderMain(app);
+        }
+      }
+
+      function renderLogin(container) {
+        container.innerHTML = `
                 <div class="login-container">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgODAiPjxwYXRoIGZpbGw9IiMwNTRhOTEiIGQ9Ik02MCw0MGE0MCw0MCAwIDEsMSA4MCwwYTQwLDQwIDAgMSwxIC04MCwwTTExMCwyMEg5MHYxMGgyMFYyMFoiLz48cGF0aCBmaWxsPSIjZmZkOTAwIiBkPSJNMTEwLDUwSDkwdjEwaDIwVjUwWiIvPjx0ZXh0IHg9IjE1MCIgeT0iNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwNTRhOTEiPlBSSVNNQTwvdGV4dD48L3N2Zz4=" alt="Prisma Logo" class="login-logo">
                     <div class="login-form">
@@ -642,10 +692,10 @@
                     </div>
                 </div>
             `;
-        }
-        
-        function renderMain(container) {
-            container.innerHTML = `
+      }
+
+      function renderMain(container) {
+        container.innerHTML = `
                 <div class="container">
                     <div class="header">
                         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNTAgNDAiPjxwYXRoIGZpbGw9IiMwNTRhOTEiIGQ9Ik0yNSwyMGExNSwxNSAwIDEsMSAzMCwwYTE1LDE1IDAgMSwxIC0zMCwwTTQ1LDEwSDM1djVoMTBWMTBaIi8+PHBhdGggZmlsbD0iI2ZmZDkwMCIgZD0iTTQ1LDI1SDM1djVoMTBWMjVaIi8+PHRleHQgeD0iNjAiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMDU0YTkxIj5QUklTTUE8L3RleHQ+PC9zdmc+" alt="Prisma Logo" class="logo">
@@ -663,45 +713,51 @@
                 </div>
                 <div id="modal" class="modal"></div>
             `;
-            
-            // Add event listeners for menu items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    state.currentMenu = this.dataset.menu;
-                    updateContent();
-                });
-            });
+
+        // Add event listeners for menu items
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          item.addEventListener("click", function () {
+            state.currentMenu = this.dataset.menu;
+            updateContent();
+          });
+        });
+      }
+
+      function renderContent() {
+        switch (state.currentMenu) {
+          case "home":
+            return renderHomeContent();
+          case "master":
+            return renderMasterContent();
+          case "setting":
+            return renderSettingContent();
+          case "report":
+            return renderReportContent();
+          case "about":
+            return renderAboutContent();
+          default:
+            return renderHomeContent();
         }
-        
-        function renderContent() {
-            switch (state.currentMenu) {
-                case 'home':
-                    return renderHomeContent();
-                case 'master':
-                    return renderMasterContent();
-                case 'setting':
-                    return renderSettingContent();
-                case 'report':
-                    return renderReportContent();
-                case 'about':
-                    return renderAboutContent();
-                default:
-                    return renderHomeContent();
-            }
-        }
-        
-        function renderHomeContent() {
-            return `
+      }
+
+      function renderHomeContent() {
+        return `
                 <div class="weight-display">
                     <div>
                         <div class="weight-label">Timbangan</div>
-                        <div class="weight-value">${state.currentWeight.toFixed(3)}</div>
+                        <div class="weight-value">${state.currentWeight.toFixed(
+                          3
+                        )}</div>
                     </div>
                     <div>
                         <div class="weight-label">Tare</div>
-                        <div class="weight-value">${state.tareWeight.toFixed(3)}</div>
+                        <div class="weight-value">${state.tareWeight.toFixed(
+                          3
+                        )}</div>
                         <div class="weight-label">Gross</div>
-                        <div class="weight-value">${state.grossWeight.toFixed(3)}</div>
+                        <div class="weight-value">${state.grossWeight.toFixed(
+                          3
+                        )}</div>
                     </div>
                 </div>
                 <div class="parameter-section">
@@ -709,24 +765,40 @@
                     <div class="form-row">
                         <label>Line</label>
                         <div class="form-control-container">
-                            <input type="text" class="form-control" id="lineInput" value="${state.selectedLine ? state.selectedLine.name : ''}" placeholder="Pilih Line" readonly onclick="showSearchModal('line')">
-                            <input type="hidden" id="lineId" value="${state.selectedLine ? state.selectedLine.id : ''}">
+                            <input type="text" class="form-control" id="lineInput" value="${
+                              state.selectedLine ? state.selectedLine.name : ""
+                            }" placeholder="Pilih Line" readonly onclick="showSearchModal('line')">
+                            <input type="hidden" id="lineId" value="${
+                              state.selectedLine ? state.selectedLine.id : ""
+                            }">
                             <div class="input-icon">📋</div>
                         </div>
                     </div>
                     <div class="form-row">
                         <label>Item</label>
                         <div class="form-control-container">
-                            <input type="text" class="form-control" id="itemInput" value="${state.selectedItem ? state.selectedItem.name : ''}" placeholder="Pilih Item" readonly onclick="showSearchModal('item')">
-                            <input type="hidden" id="itemId" value="${state.selectedItem ? state.selectedItem.id : ''}">
+                            <input type="text" class="form-control" id="itemInput" value="${
+                              state.selectedItem ? state.selectedItem.name : ""
+                            }" placeholder="Pilih Item" readonly onclick="showSearchModal('item')">
+                            <input type="hidden" id="itemId" value="${
+                              state.selectedItem ? state.selectedItem.id : ""
+                            }">
                             <div class="input-icon">📋</div>
                         </div>
                     </div>
                     <div class="form-row">
                         <label>Product</label>
                         <div class="form-control-container">
-                            <input type="text" class="form-control" id="productInput" value="${state.selectedProduct ? state.selectedProduct.name : ''}" placeholder="Pilih Product" readonly onclick="showSearchModal('product')">
-                            <input type="hidden" id="productId" value="${state.selectedProduct ? state.selectedProduct.id : ''}">
+                            <input type="text" class="form-control" id="productInput" value="${
+                              state.selectedProduct
+                                ? state.selectedProduct.name
+                                : ""
+                            }" placeholder="Pilih Product" readonly onclick="showSearchModal('product')">
+                            <input type="hidden" id="productId" value="${
+                              state.selectedProduct
+                                ? state.selectedProduct.id
+                                : ""
+                            }">
                             <div class="input-icon">📋</div>
                         </div>
                     </div>
@@ -738,10 +810,10 @@
                     <button class="action-btn btn-submit" onclick="submitWeighing()">SUBMIT</button>
                 </div>
             `;
-        }
-        
-        function renderMasterContent() {
-            return `
+      }
+
+      function renderMasterContent() {
+        return `
                 <div class="section-title">Master Data</div>
                 <div class="master-menu">
                     <div class="master-item" onclick="showModal('line')">
@@ -762,10 +834,10 @@
                     </div>
                 </div>
             `;
-        }
-        
-        function renderSettingContent() {
-            return `
+      }
+
+      function renderSettingContent() {
+        return `
                 <div class="section-title">Settings</div>
                 <div class="settings-item">
                     <div>Save on OK only</div>
@@ -790,10 +862,10 @@
                 </div>
                 <button class="btn-save" onclick="saveSettings()">SIMPAN</button>
             `;
-        }
-        
-        function renderReportContent() {
-            return `
+      }
+
+      function renderReportContent() {
+        return `
                 <div class="section-title">Report Penimbangan</div>
                 <div class="table-container">
                     <table>
@@ -809,7 +881,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${database.weighings.map((weighing, index) => `
+                            ${database.weighings
+                              .map(
+                                (weighing, index) => `
                                 <tr>
                                     <td>${index + 1}</td>
                                     <td>${weighing.line}</td>
@@ -819,15 +893,17 @@
                                     <td>${weighing.status}</td>
                                     <td>${weighing.date}</td>
                                 </tr>
-                            `).join('')}
+                            `
+                              )
+                              .join("")}
                         </tbody>
                     </table>
                 </div>
             `;
-        }
-        
-        function renderAboutContent() {
-    return `
+      }
+
+      function renderAboutContent() {
+        return `
         <div style="text-align: center; padding: 20px;">
             <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgODAiPjxwYXRoIGZpbGw9IiMwNTRhOTEiIGQ9Ik02MCw0MGE0MCw0MCAwIDEsMSA4MCwwYTQwLDQwIDAgMSwxIC04MCwwTTExMCwyMEg5MHYxMGgyMFYyMFoiLz48cGF0aCBmaWxsPSIjZmZkOTAwIiBkPSJNMTEwLDUwSDkwdjEwaDIwVjUwWiIvPjx0ZXh0IHg9IjE1MCIgeT0iNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwNTRhOTEiPlBSSVNNQTwvdGV4dD48L3N2Zz4=" style="width: 150px; margin-bottom: 20px;">
             <h2 style="color: #054a91; margin-bottom: 10px;">Prisma Timbangan Digital</h2>
@@ -841,42 +917,48 @@
             </div>
         </div>
     `;
-}
+      }
 
-function renderFooter() {
-    // Define menus based on user role
-    let menus = [];
-    
-    if (currentUser.role === 'admin') {
-        menus = [
-            { id: 'home', icon: '🏠', label: 'HOME' },
-            { id: 'master', icon: '📋', label: 'MASTER' },
-            { id: 'setting', icon: '⚙️', label: 'SETTING' },
-            { id: 'report', icon: '📊', label: 'REPORT' },
-            { id: 'about', icon: 'ℹ️', label: 'ABOUT' }
-        ];
-    } else {
-        menus = [
-            { id: 'home', icon: '🏠', label: 'HOME' },
-            { id: 'report', icon: '📊', label: 'REPORT' },
-            { id: 'about', icon: 'ℹ️', label: 'ABOUT' }
-        ];
-    }
-    
-    return menus.map(menu => `
-        <div class="nav-item ${state.currentMenu === menu.id ? 'active' : ''}" data-menu="${menu.id}">
+      function renderFooter() {
+        // Define menus based on user role
+        let menus = [];
+
+        if (currentUser.role === "admin") {
+          menus = [
+            { id: "home", icon: "🏠", label: "HOME" },
+            { id: "master", icon: "📋", label: "MASTER" },
+            { id: "setting", icon: "⚙️", label: "SETTING" },
+            { id: "report", icon: "📊", label: "REPORT" },
+            { id: "about", icon: "ℹ️", label: "ABOUT" },
+          ];
+        } else {
+          menus = [
+            { id: "home", icon: "🏠", label: "HOME" },
+            { id: "report", icon: "📊", label: "REPORT" },
+            { id: "about", icon: "ℹ️", label: "ABOUT" },
+          ];
+        }
+
+        return menus
+          .map(
+            (menu) => `
+        <div class="nav-item ${
+          state.currentMenu === menu.id ? "active" : ""
+        }" data-menu="${menu.id}">
             <div class="nav-icon">${menu.icon}</div>
             <div>${menu.label}</div>
         </div>
-    `).join('');
-}
+    `
+          )
+          .join("");
+      }
 
-function showModal(type) {
-    const modal = document.getElementById('modal');
-    let content = '';
-    
-    switch (type) {
-        case 'line':
+      function showModal(type) {
+        const modal = document.getElementById("modal");
+        let content = "";
+
+        switch (type) {
+          case "line":
             content = `
                 <div class="modal-content">
                     <div class="modal-header">
@@ -896,7 +978,7 @@ function showModal(type) {
                 </div>
             `;
             break;
-        case 'item':
+          case "item":
             content = `
                 <div class="modal-content">
                     <div class="modal-header">
@@ -920,7 +1002,7 @@ function showModal(type) {
                 </div>
             `;
             break;
-        case 'product':
+          case "product":
             content = `
                 <div class="modal-content">
                     <div class="modal-header">
@@ -952,7 +1034,7 @@ function showModal(type) {
                 </div>
             `;
             break;
-        case 'operator':
+          case "operator":
             content = `
                 <div class="modal-content">
                     <div class="modal-header">
@@ -976,42 +1058,42 @@ function showModal(type) {
                 </div>
             `;
             break;
-    }
-    
-    modal.innerHTML = content;
-    modal.style.display = 'flex';
-}
+        }
 
-function closeModal() {
-    const modal = document.getElementById('modal');
-    modal.style.display = 'none';
-}
+        modal.innerHTML = content;
+        modal.style.display = "flex";
+      }
 
-// Search functionality
-function showSearchModal(type) {
-    const modal = document.createElement('div');
-    modal.className = 'search-modal';
-    modal.id = 'searchModal';
-    
-    let items = [];
-    let title = '';
-    
-    switch(type) {
-        case 'line':
+      function closeModal() {
+        const modal = document.getElementById("modal");
+        modal.style.display = "none";
+      }
+
+      // Search functionality
+      function showSearchModal(type) {
+        const modal = document.createElement("div");
+        modal.className = "search-modal";
+        modal.id = "searchModal";
+
+        let items = [];
+        let title = "";
+
+        switch (type) {
+          case "line":
             items = database.lines;
-            title = 'Pilih Line';
+            title = "Pilih Line";
             break;
-        case 'item':
+          case "item":
             items = database.items;
-            title = 'Pilih Item';
+            title = "Pilih Item";
             break;
-        case 'product':
+          case "product":
             items = database.products;
-            title = 'Pilih Product';
+            title = "Pilih Product";
             break;
-    }
-    
-    modal.innerHTML = `
+        }
+
+        modal.innerHTML = `
         <div class="search-content">
             <div class="search-header">
                 <input type="text" class="search-input" id="searchInput" placeholder="Search" onkeyup="filterItems('${type}')">
@@ -1021,7 +1103,9 @@ function showSearchModal(type) {
             </div>
             <div class="search-pagination">
                 <div class="pagination-info">
-                    Rows per page: 10 • 1-${Math.min(10, items.length)} of ${items.length}
+                    Rows per page: 10 • 1-${Math.min(10, items.length)} of ${
+          items.length
+        }
                 </div>
                 <div class="pagination-controls">
                     <button class="pagination-button" disabled>❮</button>
@@ -1033,319 +1117,364 @@ function showSearchModal(type) {
             </div>
         </div>
     `;
-    
-    document.body.appendChild(modal);
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeSearchModal();
-        }
-    });
-}
 
-function renderSearchItems(items, type) {
-    return items.map((item, index) => `
+        document.body.appendChild(modal);
+
+        // Close modal when clicking outside
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            closeSearchModal();
+          }
+        });
+      }
+
+      function renderSearchItems(items, type) {
+        return items
+          .map(
+            (item, index) => `
         <div class="search-item">
-            <input type="radio" name="search-select" class="search-checkbox" data-id="${item.id}" data-name="${item.name}" ${index === 0 ? 'checked' : ''}>
+            <input type="radio" name="search-select" class="search-checkbox" data-id="${
+              item.id
+            }" data-name="${item.name}" ${index === 0 ? "checked" : ""}>
             <div class="search-details">
                 <div class="search-id">${item.id}</div>
                 <div class="search-name">${item.name}</div>
             </div>
         </div>
-    `).join('');
-}
+    `
+          )
+          .join("");
+      }
 
-function filterItems(type) {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    let items = [];
-    
-    switch(type) {
-        case 'line':
-            items = database.lines.filter(line => 
-                line.name.toLowerCase().includes(searchTerm) || 
+      function filterItems(type) {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        let items = [];
+
+        switch (type) {
+          case "line":
+            items = database.lines.filter(
+              (line) =>
+                line.name.toLowerCase().includes(searchTerm) ||
                 line.id.toString().includes(searchTerm)
             );
             break;
-        case 'item':
-            items = database.items.filter(item => 
-                item.name.toLowerCase().includes(searchTerm) || 
+          case "item":
+            items = database.items.filter(
+              (item) =>
+                item.name.toLowerCase().includes(searchTerm) ||
                 item.id.toString().includes(searchTerm) ||
                 (item.code && item.code.toLowerCase().includes(searchTerm))
             );
             break;
-        case 'product':
-            items = database.products.filter(product => 
-                product.name.toLowerCase().includes(searchTerm) || 
+          case "product":
+            items = database.products.filter(
+              (product) =>
+                product.name.toLowerCase().includes(searchTerm) ||
                 product.id.toString().includes(searchTerm) ||
-                (product.weight && product.weight.toString().includes(searchTerm))
+                (product.weight &&
+                  product.weight.toString().includes(searchTerm))
             );
             break;
-    }
-    
-    document.getElementById('searchResults').innerHTML = renderSearchItems(items, type);
-}
-
-function submitSearch(type) {
-    const selectedRadio = document.querySelector('input[name="search-select"]:checked');
-    
-    if (selectedRadio) {
-        const id = selectedRadio.dataset.id;
-        const name = selectedRadio.dataset.name;
-        
-        switch(type) {
-            case 'line':
-                const line = database.lines.find(l => l.id == id);
-                state.selectedLine = line;
-                break;
-            case 'item':
-                const item = database.items.find(i => i.id == id);
-                state.selectedItem = item;
-                break;
-            case 'product':
-                const product = database.products.find(p => p.id == id);
-                state.selectedProduct = product;
-                break;
         }
-        
-        updateContent();
-    }
-    
-    closeSearchModal();
-}
 
-function closeSearchModal() {
-    const modal = document.getElementById('searchModal');
-    if (modal) {
-        document.body.removeChild(modal);
-    }
-}
+        document.getElementById("searchResults").innerHTML = renderSearchItems(
+          items,
+          type
+        );
+      }
 
-// Application logic
-function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    
-    const user = database.users.find(u => u.username === username && u.password === password);
-    
-    if (user) {
-        currentUser = user;
-        state.currentScreen = 'main';
-        state.currentMenu = 'home';
-        renderApp();
-        
-        // Simulate weight readings
-        startWeightSimulation();
-    } else {
-        alert('Username atau password salah!');
-    }
-}
+      function submitSearch(type) {
+        const selectedRadio = document.querySelector(
+          'input[name="search-select"]:checked'
+        );
 
-function updateContent() {
-    const contentElement = document.getElementById('content');
-    if (contentElement) {
-        contentElement.innerHTML = renderContent();
-    }
-    
-    const footerItems = document.querySelectorAll('.nav-item');
-    footerItems.forEach(item => {
-        if (item.dataset.menu === state.currentMenu) {
-            item.classList.add('active');
+        if (selectedRadio) {
+          const id = selectedRadio.dataset.id;
+          const name = selectedRadio.dataset.name;
+
+          switch (type) {
+            case "line":
+              const line = database.lines.find((l) => l.id == id);
+              state.selectedLine = line;
+              break;
+            case "item":
+              const item = database.items.find((i) => i.id == id);
+              state.selectedItem = item;
+              break;
+            case "product":
+              const product = database.products.find((p) => p.id == id);
+              state.selectedProduct = product;
+              break;
+          }
+
+          updateContent();
+        }
+
+        closeSearchModal();
+      }
+
+      function closeSearchModal() {
+        const modal = document.getElementById("searchModal");
+        if (modal) {
+          document.body.removeChild(modal);
+        }
+      }
+
+      // Application logic
+      function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const user = database.users.find(
+          (u) => u.username === username && u.password === password
+        );
+
+        if (user) {
+          currentUser = user;
+          state.currentScreen = "main";
+          state.currentMenu = "home";
+          renderApp();
+
+          // Simulate weight readings
+          startWeightSimulation();
         } else {
-            item.classList.remove('active');
+          alert("Username atau password salah!");
         }
-    });
-}
+      }
 
-function startWeightSimulation() {
-    // Simulate random weight changes
-    setInterval(() => {
-        // Small random fluctuation
-        const fluctuation = (Math.random() - 0.5) * 0.1;
-        state.currentWeight = Math.max(0, state.currentWeight + fluctuation);
-        state.grossWeight = state.currentWeight - state.tareWeight;
-        
-        // Update display if on home screen
-        if (state.currentMenu === 'home') {
+      function updateContent() {
+        const contentElement = document.getElementById("content");
+        if (contentElement) {
+          contentElement.innerHTML = renderContent();
+        }
+
+        const footerItems = document.querySelectorAll(".nav-item");
+        footerItems.forEach((item) => {
+          if (item.dataset.menu === state.currentMenu) {
+            item.classList.add("active");
+          } else {
+            item.classList.remove("active");
+          }
+        });
+      }
+
+      function startWeightSimulation() {
+        // Simulate random weight changes
+        setInterval(() => {
+          // Small random fluctuation
+          const fluctuation = (Math.random() - 0.5) * 0.1;
+          state.currentWeight = Math.max(0, state.currentWeight + fluctuation);
+          state.grossWeight = state.currentWeight - state.tareWeight;
+
+          // Update display if on home screen
+          if (state.currentMenu === "home") {
             // Only update the weight display, not reset selections
-            const weightDisplay = document.querySelector('.weight-display');
+            const weightDisplay = document.querySelector(".weight-display");
             if (weightDisplay) {
-                weightDisplay.innerHTML = `
+              weightDisplay.innerHTML = `
                     <div>
                         <div class="weight-label">Timbangan</div>
-                        <div class="weight-value">${state.currentWeight.toFixed(3)}</div>
+                        <div class="weight-value">${state.currentWeight.toFixed(
+                          3
+                        )}</div>
                     </div>
                     <div>
                         <div class="weight-label">Tare</div>
-                        <div class="weight-value">${state.tareWeight.toFixed(3)}</div>
+                        <div class="weight-value">${state.tareWeight.toFixed(
+                          3
+                        )}</div>
                         <div class="weight-label">Gross</div>
-                        <div class="weight-value">${state.grossWeight.toFixed(3)}</div>
+                        <div class="weight-value">${state.grossWeight.toFixed(
+                          3
+                        )}</div>
                     </div>
                 `;
             }
+          }
+        }, 1000);
+      }
+
+      function tare() {
+        state.tareWeight = state.currentWeight;
+        state.grossWeight = 0;
+        updateContent();
+      }
+
+      function zero() {
+        state.currentWeight = 0;
+        state.grossWeight = -state.tareWeight;
+        updateContent();
+      }
+
+      function submitWeighing() {
+        if (
+          !state.selectedLine ||
+          !state.selectedItem ||
+          !state.selectedProduct
+        ) {
+          alert("Silakan pilih Line, Item, dan Product terlebih dahulu!");
+          return;
         }
-    }, 1000);
-}
 
-function tare() {
-    state.tareWeight = state.currentWeight;
-    state.grossWeight = 0;
-    updateContent();
-}
+        const today = new Date();
+        const dateStr = `${today.getFullYear()}-${(today.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
 
-function zero() {
-    state.currentWeight = 0;
-    state.grossWeight = -state.tareWeight;
-    updateContent();
-}
+        // Determine if weight is within tolerance
+        let status = "NG";
+        if (
+          state.grossWeight >= state.selectedProduct.minTolerance &&
+          state.grossWeight <= state.selectedProduct.maxTolerance
+        ) {
+          status = "OK";
+        }
 
-function submitWeighing() {
-    if (!state.selectedLine || !state.selectedItem || !state.selectedProduct) {
-        alert('Silakan pilih Line, Item, dan Product terlebih dahulu!');
-        return;
-    }
-    
-    const today = new Date();
-    const dateStr = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-    
-    // Determine if weight is within tolerance
-    let status = 'NG';
-    if (state.grossWeight >= state.selectedProduct.minTolerance && state.grossWeight <= state.selectedProduct.maxTolerance) {
-        status = 'OK';
-    }
-    
-    const weighingData = {
-        id: database.weighings.length + 1,
-        line: state.selectedLine.name,
-        item: state.selectedItem.name,
-        product: state.selectedProduct.name,
-        weight: state.grossWeight,
-        status: status,
-        date: dateStr
-    };
-    
-    database.weighings.push(weighingData);
-    saveDatabase(); // Save to localStorage
-    alert('Data penimbangan berhasil disimpan!');
-}
+        const weighingData = {
+          id: database.weighings.length + 1,
+          line: state.selectedLine.name,
+          item: state.selectedItem.name,
+          product: state.selectedProduct.name,
+          weight: state.grossWeight,
+          status: status,
+          date: dateStr,
+        };
 
-function addLine() {
-    const lineName = document.getElementById('lineName').value;
-    
-    if (!lineName) {
-        alert('Nama Line tidak boleh kosong!');
-        return;
-    }
-    
-    const newLine = {
-        id: database.lines.length + 1,
-        name: lineName
-    };
-    
-    database.lines.push(newLine);
-    saveDatabase(); // Save to localStorage
-    closeModal();
-    alert('Line baru berhasil ditambahkan!');
-    
-    if (state.currentMenu === 'home') {
-        updateContent();
-    }
-}
+        database.weighings.push(weighingData);
+        saveDatabase(); // Save to localStorage
+        alert("Data penimbangan berhasil disimpan!");
+      }
 
-function addItem() {
-    const itemName = document.getElementById('itemName').value;
-    const itemCode = document.getElementById('itemCode') ? document.getElementById('itemCode').value : '';
-    
-    if (!itemName) {
-        alert('Nama Item tidak boleh kosong!');
-        return;
-    }
-    
-    const newItem = {
-        id: database.items.length + 1,
-        name: itemName,
-        code: itemCode
-    };
-    
-    database.items.push(newItem);
-    saveDatabase(); // Save to localStorage
-    closeModal();
-    alert('Item baru berhasil ditambahkan!');
-    
-    if (state.currentMenu === 'home') {
-        updateContent();
-    }
-}
+      function addLine() {
+        const lineName = document.getElementById("lineName").value;
 
-function addProduct() {
-    const productName = document.getElementById('productName').value;
-    const productWeight = document.getElementById('productWeight').value;
-    const minTolerance = parseFloat(document.getElementById('minTolerance').value);
-    const maxTolerance = parseFloat(document.getElementById('maxTolerance').value);
-    
-    if (!productName || !productWeight || isNaN(minTolerance) || isNaN(maxTolerance)) {
-        alert('Semua field harus diisi dengan benar!');
-        return;
-    }
-    
-    const newProduct = {
-        id: database.products.length + 1,
-        name: productName,
-        weight: productWeight,
-        minTolerance: minTolerance,
-        maxTolerance: maxTolerance
-    };
-    
-    database.products.push(newProduct);
-    saveDatabase(); // Save to localStorage
-    closeModal();
-    alert('Product baru berhasil ditambahkan!');
-    
-    if (state.currentMenu === 'home') {
-        updateContent();
-    }
-}
+        if (!lineName) {
+          alert("Nama Line tidak boleh kosong!");
+          return;
+        }
 
-function addOperator() {
-    const username = document.getElementById('operatorName').value;
-    const password = document.getElementById('operatorPass').value;
-    
-    if (!username || !password) {
-        alert('Username dan password tidak boleh kosong!');
-        return;
-    }
-    
-    const newOperator = {
-        username: username,
-        password: password,
-        role: 'operator'
-    };
-    
-    database.users.push(newOperator);
-    saveDatabase(); // Save to localStorage
-    closeModal();
-    alert('Operator baru berhasil ditambahkan!');
-}
+        const newLine = {
+          id: database.lines.length + 1,
+          name: lineName,
+        };
 
-function saveSettings() {
-    saveDatabase(); // Save to localStorage
-    alert('Pengaturan berhasil disimpan!');
-}
+        database.lines.push(newLine);
+        saveDatabase(); // Save to localStorage
+        closeModal();
+        alert("Line baru berhasil ditambahkan!");
 
-// Initialize app
-window.onload = function() {
-    // Load database from localStorage
-    loadDatabase();
-    
-    renderApp();
-    
-    // Add event listeners for login form
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && state.currentScreen === 'login') {
+        if (state.currentMenu === "home") {
+          updateContent();
+        }
+      }
+
+      function addItem() {
+        const itemName = document.getElementById("itemName").value;
+        const itemCode = document.getElementById("itemCode")
+          ? document.getElementById("itemCode").value
+          : "";
+
+        if (!itemName) {
+          alert("Nama Item tidak boleh kosong!");
+          return;
+        }
+
+        const newItem = {
+          id: database.items.length + 1,
+          name: itemName,
+          code: itemCode,
+        };
+
+        database.items.push(newItem);
+        saveDatabase(); // Save to localStorage
+        closeModal();
+        alert("Item baru berhasil ditambahkan!");
+
+        if (state.currentMenu === "home") {
+          updateContent();
+        }
+      }
+
+      function addProduct() {
+        const productName = document.getElementById("productName").value;
+        const productWeight = document.getElementById("productWeight").value;
+        const minTolerance = parseFloat(
+          document.getElementById("minTolerance").value
+        );
+        const maxTolerance = parseFloat(
+          document.getElementById("maxTolerance").value
+        );
+
+        if (
+          !productName ||
+          !productWeight ||
+          isNaN(minTolerance) ||
+          isNaN(maxTolerance)
+        ) {
+          alert("Semua field harus diisi dengan benar!");
+          return;
+        }
+
+        const newProduct = {
+          id: database.products.length + 1,
+          name: productName,
+          weight: productWeight,
+          minTolerance: minTolerance,
+          maxTolerance: maxTolerance,
+        };
+
+        database.products.push(newProduct);
+        saveDatabase(); // Save to localStorage
+        closeModal();
+        alert("Product baru berhasil ditambahkan!");
+
+        if (state.currentMenu === "home") {
+          updateContent();
+        }
+      }
+
+      function addOperator() {
+        const username = document.getElementById("operatorName").value;
+        const password = document.getElementById("operatorPass").value;
+
+        if (!username || !password) {
+          alert("Username dan password tidak boleh kosong!");
+          return;
+        }
+
+        const newOperator = {
+          username: username,
+          password: password,
+          role: "operator",
+        };
+
+        database.users.push(newOperator);
+        saveDatabase(); // Save to localStorage
+        closeModal();
+        alert("Operator baru berhasil ditambahkan!");
+      }
+
+      function saveSettings() {
+        saveDatabase(); // Save to localStorage
+        alert("Pengaturan berhasil disimpan!");
+      }
+
+      // Initialize app
+      window.onload = function () {
+        // Load database from localStorage
+        loadDatabase();
+
+        renderApp();
+
+        // Add event listeners for login form
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && state.currentScreen === "login") {
             login();
-        }
-    });
-};
-</script>
-</body>
+          }
+        });
+      };
+    </script>
+  </body>
 </html>
